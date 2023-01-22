@@ -10,15 +10,15 @@ import { NavigationProp } from "@react-navigation/native";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { AppContext } from "../context";
 
 type Props = {
   navigation: NavigationProp<any, any>;
 };
 
-const LoginScreen = ({ navigation }: Props) => {
+const SignupScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
@@ -35,8 +35,8 @@ const LoginScreen = ({ navigation }: Props) => {
     });
   }, []);
 
-  const logIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
+  const signUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
       .then((data) => {
         setIsUserLoggedIn(true);
       })
@@ -56,15 +56,15 @@ const LoginScreen = ({ navigation }: Props) => {
           />
           <Text
             className="text-glovoGreen text-semibold text-base"
-            onPress={() => navigation.navigate("Signup")}
+            onPress={() => navigation.navigate("Login")}
           >
-            Sign up
+            Log in
           </Text>
         </View>
 
         {/* Heading text */}
         <View className="w-full flex flex-row justify-center mt-8">
-          <Text className="text-3xl font-normal text-black">Log in</Text>
+          <Text className="text-3xl font-normal text-black">Sign up</Text>
         </View>
 
         {/* Input forms */}
@@ -119,29 +119,29 @@ const LoginScreen = ({ navigation }: Props) => {
           <View className="w-full flex flex-row justify-center mt-8">
             <Text
               className="text-glovoGreen active:text-glovoGrayDark font-bold text-base"
-              onPress={() => {}}
+              onPress={() => navigation.navigate("")}
             >
-              Forgot your password?
+              Already have an account?
             </Text>
           </View>
 
           <View className="w-full flex flex-row justify-center mt-8">
             <TouchableHighlight
               underlayColor="#6E6E6E"
-              disabled={email.length > 6 && password.length > 3 ? false : true}
+              disabled={email.length > 6 && password.length > 6 ? false : true}
               className={`mt-2 w-[75%] h-12 ${
                 email.length > 6 && password.length > 3
                   ? "bg-glovoGreen"
                   : "bg-[#6E6E6E]"
               } flex justify-center items-center rounded-3xl`}
-              onPress={() => logIn()}
+              onPress={() => signUp()}
             >
-              <Text className=" text-white font-bold text-xl">Log in</Text>
+              <Text className=" text-white font-bold text-xl">Sign up</Text>
             </TouchableHighlight>
           </View>
         </View>
 
-        {/* Bottom rounded rectangle */}
+        {/* Bottom rectangle */}
         <View className="bg-yellow-500 w-full h-80 flex justify-center items-center absolute -bottom-[170px] overflow-hidden">
           <View className="w-[1000px] h-[500px] rounded-b-full bg-gray-100 absolute -top-[450px] overflow-hidden"></View>
         </View>
@@ -150,6 +150,6 @@ const LoginScreen = ({ navigation }: Props) => {
   );
 };
 
-export default LoginScreen;
+export default SignupScreen;
 
 const styles = StyleSheet.create({});
